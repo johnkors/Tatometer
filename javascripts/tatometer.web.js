@@ -1,18 +1,14 @@
 $(document).ready(function() {
 	var users = getUsers();
-	var tas = getTaFromServer();
-	
-	console.log(users);
-	console.log(tas);
-	
+	var tas = getTasFromServer();
+
 	tatometer.addTas(tas);
 	tatometer.addUsers(users);
-	
-	console.log(tatometer.localTas);
 
 	$('.tasubmit').click(function() {
 		console.log(tatometer);
 	});
+		
 });
 
 function getUsers() {
@@ -23,22 +19,31 @@ function getUsers() {
 	return taere;
 }
 
+function getTasFromServer() {
+	var tas = []
+	var ta1 = getSingleTa(1);
+	var ta2 = getSingleTa(2);
+	tas.push(ta1);
+	tas.push(ta2);
+	return tas;
+}
+
 function getUser(primaryKey, first, last) {
 	return { 
 		id : primaryKey,
 		firstName : first,
 		lastName : last
-	};
+	}
 }
 
-function getTaFromServer() {
-	var taRegistrar = getUser(1, "John", "Korsnes");
-	var taReceiver = getUser(2, "Hans", "Wold");
+function getSingleTa(i) {
+	var taRegistrar = getUser(i, "Registrar"+i, "Surname");
+	var taReceiver = getUser(i+1, "Receiver"+i+1, "LastName");
 	
 	return {
+		id : i,
 		registeredBy : taRegistrar,
 		taer : taReceiver,
-		description : "Er ikke dette Kolnerdomen?"
-	};
-	
+		description : "This is the Ta nr " + i
+	}
 }
