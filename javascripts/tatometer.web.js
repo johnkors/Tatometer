@@ -1,26 +1,20 @@
 $(document).ready(function() {
 	
-	var loggedInUser = getUser(1, "John", "Korsnes");
-	var users = getUsers();
-	var tas = getTasFromServer();
+	bindSelectBox();
+	bindExistingTas();
+	bindUsers();
 	
-	tatometer.init(tas, users);
-	
-	
+	var loggedInUser = tatometer.users[0];
+      
 	$('.tasubmit').click(function() {
-		var taer = getTaer();
+		var taReceiverId = $('#users :selected').val();
+		var taer = tatometer.findUserById(taReceiverId);
 		var description = $('#description').val();
-		var ta = tatometer.createTa(loggedInUser, taer, description);
+		var ta = factory.createTa(loggedInUser, taer, description);
 		tatometer.addTa(ta, onTaAdded);
-		console.log(tatometer.getAllTas());
 	});
 		
 });
-
-function getTaer(){
-	// Get from select box
-	return getUser(2, "Frode", "Sivertsen");
-}
 
 function onTaAdded(ta){
 	$.ajax({
@@ -37,45 +31,37 @@ function onTaAdded(ta){
 	});
 }
 
-
-
-
-
-
-/* MOCK DATA */
-function getUsers() {
-	var taere = [];
-	taere.push(getUser(1, "John", "Korsnes"));
-	taere.push(getUser(2, "Hans", "Wold"));
-	taere.push(getUser(3, "Frode", "Sniev"));
-	return taere;
-}
-
-function getTasFromServer() {
-	var tas = []
-	var ta1 = getSingleTa(1);
-	var ta2 = getSingleTa(2);
-	tas.push(ta1);
-	tas.push(ta2);
-	return tas;
-}
-
-function getUser(primaryKey, first, last) {
-	return { 
-		id : primaryKey,
-		firstName : first,
-		lastName : last
+function bindSelectBox(){
+	var options = '';
+    var j = tatometer.users;
+	for(var i = 0; i < j.length; i++) {
+		options += '<option value="' + j[i].id + '">' + j[i].fullName + '</option>';
 	}
+
+    $('#taerSelect').html(options);
 }
 
-function getSingleTa(i) {
-	var taRegistrar = getUser(i, "Registrar"+i, "Surname");
-	var taReceiver = getUser(i+1, "Receiver"+i+1, "LastName");
-	
-	return {
-		id : i,
-		registeredBy : taRegistrar,
-		taer : taReceiver,
-		description : "This is the Ta nr " + i
+function bindExistingTas(){
+	var list = '';
+	var j = tatometer.getAllTas();
+	for(var i = 0; i < j.length; i++) {
+		list += '<li>' + j[i].receiver.firstName + ' - '+  j[i].description + '</li>';
 	}
+	 $('#tas').html(list);
 }
+
+function bindUsers(){
+	var list = '';
+    var j = tatometer.users;
+	for(var i = 0; i < j.length; i++) {
+		list += '<li>' + j[i].fullName + '</li>';
+	}
+
+    $('#users').html(list);
+}
+
+
+
+
+
+
