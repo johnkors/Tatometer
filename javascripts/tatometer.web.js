@@ -1,16 +1,48 @@
 $(document).ready(function() {
+	
+	var loggedInUser = getUser(1, "John", "Korsnes");
 	var users = getUsers();
 	var tas = getTasFromServer();
-
-	tatometer.addTas(tas);
-	tatometer.addUsers(users);
-
+	
+	tatometer.init(tas, users);
+	
+	
 	$('.tasubmit').click(function() {
-		console.log(tatometer);
+		var taer = getTaer();
+		var description = $('#description').val();
+		var ta = tatometer.createTa(loggedInUser, taer, description);
+		tatometer.addTa(ta, onTaAdded);
+		console.log(tatometer.getAllTas());
 	});
 		
 });
 
+function getTaer(){
+	// Get from select box
+	return getUser(2, "Frode", "Sivertsen");
+}
+
+function onTaAdded(ta){
+	$.ajax({
+		url: 'ta/create/',
+		data: ta,
+		dataType : 'json',
+		type : 'POST',
+		success : function(msg){
+			console.log('Ta created serverside');
+		},
+		error : function(msg){
+			console.log('Ta not created serverside! Error experienced!');
+		}
+	});
+}
+
+
+
+
+
+
+/* MOCK DATA */
 function getUsers() {
 	var taere = [];
 	taere.push(getUser(1, "John", "Korsnes"));
