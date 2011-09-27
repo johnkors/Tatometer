@@ -1,16 +1,16 @@
 var factory = ( function() {
 	return {
-		createUser : function createUser(primaryKey, first, last) {
+		createUser : function(id, first, last) {
 			return {
-				id : primaryKey,
+				id : id,
 				firstName : first,
 				lastName : last,
 				fullName : first + ' ' + last
 			}
 		},
-		createTa : function(taCreator, taReceiver, taDescription) {
+		createTa : function(id, taCreator, taReceiver, taDescription) {
 			return {
-				id : -1,
+				id : id,
 				creator : taCreator,
 				receiver : taReceiver,
 				description : taDescription
@@ -85,18 +85,19 @@ function getTasFromServer() {
 }
 
 function getSingleTa(i) {
-	var taCreator = getUsers()[0 + i];
-	var taReceiver = getUsers()[1 + i];
-	var description = 'Hello world, ' + taReceiver.firstName;
-	var ta = factory.createTa(taCreator, taReceiver, description);
+	var users = getUsers();
+	var taCreator = users[0 + i];
+	var taReceiver = users[1 + i];
+	var description = 'Du tapte, ' + taReceiver.firstName;
+	var ta = factory.createTa(i+1,taCreator, taReceiver, description);
 	return ta;
 }
 
 function getUsers() {
 	var users = [];
 	users.push(factory.createUser(1, "John", "Korsnes"));
-	users.push(factory.createUser(2, "Hans", "Wold"));
-	users.push(factory.createUser(3, "Frode", "Sniev"));
+	users.push(factory.createUser(2, "Hans Magnus", "Wold"));
+	users.push(factory.createUser(3, "Frode", "Sivertsen"));
 	users.push(factory.createUser(4, "Kristian", "Mella"));
 	users.push(factory.createUser(5, "Thomas", "Odd"));
 	users.push(factory.createUser(6, "Torgeir", "Haukaas"));
