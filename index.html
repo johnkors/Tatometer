@@ -24,6 +24,8 @@
 	<link rel="stylesheet" href="stylesheets/base.css">
 	<link rel="stylesheet" href="stylesheets/skeleton.css">
 	<link rel="stylesheet" href="stylesheets/layout.css">
+	<link rel="stylesheet" href="stylesheets/jquery-ui-1.8.16.custom.css">
+	<link rel="stylesheet" href="stylesheets/tatometer.css">
 
 	<!-- Favicons
 	================================================== -->
@@ -34,7 +36,7 @@
 
 </head>
 <body>
-	<script type="text/x-jquery-tmpl" id="taTemplate">
+<script type="text/x-jquery-tmpl" id="taTemplate">
         <li>
         	<span>${id}</span>
          	<span>${description}</span>
@@ -44,13 +46,23 @@
         </li>
 </script>
 
+<script type="text/x-jquery-tmpl" id="taerTemplate">
+	<li>
+		<input type="checkbox" class="userbutton" id="${id}"></input>
+		<label for="${id}">
+			<img src="http://www.gravatar.com/avatar/abb0d6cd02a0218c07d17544ff55a952" 
+				 alt="${fullName}"> 
+		</label>
+	</li>
+</script>
+
 
 
 	<!-- Primary Page Layout
 	================================================== -->
 
 	<!-- Delete everything in this .container and get started on your own site! -->
-	<div class="tatometerdata"/></div>
+	
 	<div class="container">
 		<div class="sixteen columns">
 			<h1 class="remove-bottom" style="margin-top: 40px">Tatometer</h1>
@@ -59,6 +71,9 @@
 		</div>
 		<div class="one-third column">
 			<h3>Legg til ta</h3>
+			<ul id="userbuttons" data-bind="template: {name: 'taerTemplate', foreach:users}">
+				
+			</ul>
 			<select id="taerSelect">
 				
 			</select>
@@ -84,8 +99,9 @@
 	<!-- JS
 	================================================== -->
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-	<script src="javascripts/tabs.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<script src="javascripts/tabs.js"></script>
 	<script src='javascripts/knockout-1.2.1.js'></script>
 	<script src="javascripts/tatometer.core.js"></script>
 	<script src="javascripts/tatometer.web.js"></script>

@@ -5,6 +5,8 @@ $(document).ready(function() {
 	bindSelectBox();
 	bindUsers();
 	
+	$('#userbuttons').buttonset();
+	
 	var loggedInUser = tatometer.users[0];
       
 	$('.tasubmit').click(function() {
