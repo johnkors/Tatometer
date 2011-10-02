@@ -14,13 +14,14 @@ $(document).ready(function() {
 		
 		
 		var taReceiverIds = $('#userbuttons input:checked');
+		var taReceivers = [];
 		$.each(taReceiverIds, function(index, checkBox){
 			var userId = checkBox.value;
 			var taer = tatometer.findUserById(userId);
-			var ta = createTa(loggedInUser, taer, description);
-			tatometer.addTa(ta, onTaAdded);
-			
+			taReceivers.push(taer);
 		});
+		var ta = createTa(loggedInUser, taReceivers, description);
+		tatometer.addTa(ta, onTaAdded);
 	});
 		
 });

@@ -41,7 +41,9 @@
 	        <li>
 	        	<span>${id}</span>
 	         	<span>${description}</span>
-	         	<span>Receiver: ${receiver.fullName}</span>
+	         	{{each receivers}}
+	         		<span>${fullName}</span>
+	         	{{/each}}
 	         	<span>Creator: ${creator.fullName}</span>
 	         	<span><a href="#" data-bind="click: deleteTa">Slett</a></span>
 	        </li>

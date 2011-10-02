@@ -1,12 +1,12 @@
 var userId = 1;
 var taId = 0;
 
-createTa =  function(taCreator, taReceiver, taDescription) {
+createTa =  function(taCreator, taReceivers, taDescription) {
 	taId++;
 	return {
 		id : taId,
 		creator : taCreator,
-		receiver : taReceiver,
+		receivers : taReceivers,
 		description : taDescription,
 		deleteTa : function(){ 
 			tatometer.removeTa(this, onTaRemoved);
@@ -92,9 +92,9 @@ function getTasFromServer() {
 function getSingleTa(i) {
 	var users = getUsers();
 	var taCreator = users[0 + i];
-	var taReceiver = users[1 + i];
-	var description = 'Du tapte, ' + taReceiver.firstName;
-	var ta = createTa(taCreator, taReceiver, description);
+	var taReceivers = [users[1 + i], users[2 + i]];
+	var description = 'Dere tapte, ' + taReceivers.length;
+	var ta = createTa(taCreator, taReceivers, description);
 	return ta;
 }
 
