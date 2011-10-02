@@ -36,32 +36,27 @@
 
 </head>
 <body>
-<script type="text/x-jquery-tmpl" id="taTemplate">
-        <li>
-        	<span>${id}</span>
-         	<span>${description}</span>
-         	<span>Receiver: ${receiver.fullName}</span>
-         	<span>Creator: ${creator.fullName}</span>
-         	<span><a href="#" data-bind="click: deleteTa">Slett</a></span>
-        </li>
-</script>
+	
+	<script type="text/x-jquery-tmpl" id="taTemplate">
+	        <li>
+	        	<span>${id}</span>
+	         	<span>${description}</span>
+	         	<span>Receiver: ${receiver.fullName}</span>
+	         	<span>Creator: ${creator.fullName}</span>
+	         	<span><a href="#" data-bind="click: deleteTa">Slett</a></span>
+	        </li>
+	</script>
 
-<script type="text/x-jquery-tmpl" id="taerTemplate">
-	<li>
-		<input type="checkbox" class="userbutton" id="${id}"></input>
-		<label for="${id}">
-			<img src="http://www.gravatar.com/avatar/abb0d6cd02a0218c07d17544ff55a952" 
-				 alt="${fullName}"> 
-		</label>
-	</li>
-</script>
-
-
-
-	<!-- Primary Page Layout
-	================================================== -->
-
-	<!-- Delete everything in this .container and get started on your own site! -->
+	<script type="text/x-jquery-tmpl" id="taerTemplate">
+		<li>
+			<input type="checkbox" class="userbutton" id="${id}" value="${id}"></input>
+			<label for="${id}">
+				<img src="http://www.gravatar.com/avatar/${gravatar}" 
+					 alt="${fullName}"> 
+			</label>
+		</li>
+	</script>
+	
 	
 	<div class="container">
 		<div class="sixteen columns">
@@ -69,15 +64,15 @@
 			<h5>Versjon 0.2</h5>
 			<hr />
 		</div>
-		<div class="one-third column">
+		<div class="sixteen columns">
 			<h3>Legg til ta</h3>
 			<ul id="userbuttons" data-bind="template: {name: 'taerTemplate', foreach:users}">
 				
 			</ul>
-			<select id="taerSelect">
-				
-			</select>
-			<textarea id="description">Skriv inn ta..</textarea> <input class="tasubmit" type="submit" value="NewTa" />
+			<div style="clear:both;"></div>
+	
+			<textarea id="description"></textarea> 
+			<input class="tabutton full-width" type="submit" value="Lag TA!" />
 			</div>
 		<div class="one-third column">
 			<h3>Alle Ta</h3>
@@ -92,12 +87,10 @@
 			</ul>
 		</div>
 
-	</div><!-- container -->
+	</div>
 
 	
 
-	<!-- JS
-	================================================== -->
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
@@ -106,7 +99,6 @@
 	<script src="javascripts/tatometer.core.js"></script>
 	<script src="javascripts/tatometer.web.js"></script>
 
-<!-- End Document
-================================================== -->
+
 </body>
 </html>

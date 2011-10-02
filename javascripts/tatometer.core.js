@@ -20,13 +20,10 @@ createUser = function(first, last) {
 		id : userId,
 		firstName : first,
 		lastName : last,
-		fullName : first + ' ' + last
+		fullName : first + ' ' + last,
+		gravatar : 'abb0d6cd02a0218c07d17544ff55a952'
 	}
 }
-
-
-
-
 var tatometer = ( function() {
 
 	var allTas = [];
@@ -85,7 +82,7 @@ ko.applyBindings(tatometer);
 /* MOCK DATA */
 function getTasFromServer() {
 	var tas = [];
-	for(var i=0; i < 9; i++){
+	for(var i=0; i < 3; i++){
 		var ta = getSingleTa(i);
 		tas.push(ta);
 	}

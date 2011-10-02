@@ -1,6 +1,28 @@
+body{
+	
+}
+
 #userbuttons li
 {
 	float:left;
+}
+
+#userbuttons li label.ui-state-hover, #userbuttons li label.ui-state-focus
+{
+	background-image: url('');
+}
+
+textarea
+{
+	width:100%;
+	padding-right:0;
+	padding-left:0;
+	font-size:20px;
+	min-height:100px;
+}
+
+.tabutton{
+	height:40px;
 }
 
 

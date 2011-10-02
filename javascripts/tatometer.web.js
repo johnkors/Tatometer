@@ -9,13 +9,18 @@ $(document).ready(function() {
 	
 	var loggedInUser = tatometer.users[0];
       
-	$('.tasubmit').click(function() {
-		var taReceiverId = $('#taerSelect :selected').val();
-		var taer = tatometer.findUserById(taReceiverId);
+	$('.tabutton').click(function() {
 		var description = $('#description').val();
-		var ta = createTa(loggedInUser, taer, description);
 		
-		tatometer.addTa(ta, onTaAdded);
+		
+		var taReceiverIds = $('#userbuttons input:checked');
+		$.each(taReceiverIds, function(index, checkBox){
+			var userId = checkBox.value;
+			var taer = tatometer.findUserById(userId);
+			var ta = createTa(loggedInUser, taer, description);
+			tatometer.addTa(ta, onTaAdded);
+			
+		});
 	});
 		
 });
