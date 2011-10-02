@@ -34,6 +34,15 @@
 
 </head>
 <body>
+	<script type="text/x-jquery-tmpl" id="taTemplate">
+        <li>
+        	<span>${id}</span>
+         	<span>${description}</span>
+         	<span>Receiver: ${receiver.fullName}</span>
+         	<span>Creator: ${creator.fullName}</span>
+         	<span><a href="#" data-bind="click: deleteTa">Slett</a></span>
+        </li>
+</script>
 
 
 
@@ -56,8 +65,8 @@
 			<textarea id="description">Skriv inn ta..</textarea> <input class="tasubmit" type="submit" value="NewTa" />
 			</div>
 		<div class="one-third column">
-			<h3>5 siste Ta</h3>
-			<ul id="tas" class="square">
+			<h3>Alle Ta</h3>
+			<ul id="tas" class="square" data-bind="template: {name:'taTemplate', foreach:tas}">
 				
 			</ul>
 		</div>
@@ -70,14 +79,14 @@
 
 	</div><!-- container -->
 
-
+	
 
 	<!-- JS
 	================================================== -->
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="javascripts/tabs.js"></script>
 	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-	<script type='text/javascript' src='knockout-1.2.1.js'></script>
+	<script src='javascripts/knockout-1.2.1.js'></script>
 	<script src="javascripts/tatometer.core.js"></script>
 	<script src="javascripts/tatometer.web.js"></script>
 

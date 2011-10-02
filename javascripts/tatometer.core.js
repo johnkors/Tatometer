@@ -1,32 +1,39 @@
-var factory = ( function() {
+var userId = 1;
+var taId = 0;
+
+createTa =  function(taCreator, taReceiver, taDescription) {
+	taId++;
 	return {
-		createUser : function(id, first, last) {
-			return {
-				id : id,
-				firstName : first,
-				lastName : last,
-				fullName : first + ' ' + last
-			}
-		},
-		createTa : function(id, taCreator, taReceiver, taDescription) {
-			return {
-				id : id,
-				creator : taCreator,
-				receiver : taReceiver,
-				description : taDescription
-			};
+		id : taId,
+		creator : taCreator,
+		receiver : taReceiver,
+		description : taDescription,
+		deleteTa : function(){ 
+			tatometer.removeTa(this, onTaRemoved);
 		}
 	}
-}());
+}
+
+createUser = function(first, last) {
+	userId++;
+	return {
+		id : userId,
+		firstName : first,
+		lastName : last,
+		fullName : first + ' ' + last
+	}
+}
+
+
+
 
 var tatometer = ( function() {
 
 	var allTas = [];
 	var allUsers = [];
 	allUsers = getUsers();
-	allTas = getTasFromServer();
-
-	console.log(allTas);
+	var tasFromServer = getTasFromServer();
+	allTas = ko.observableArray(tasFromServer);
 
 	function findTa(user) {
 		for(var i = 0; i < allTas.length; i++) {
@@ -45,32 +52,33 @@ var tatometer = ( function() {
 			}
 		}
 	}
-
+	
 	return {
-
+		tas : allTas,
+		users : allUsers,
+		
 		addTa : function(ta, onTaAdded) {
+			var taFromServer = onTaAdded(ta);
 			allTas.push(ta);
-			onTaAdded(ta);
 		},
 		removeTa : function(ta, onTaRemoved) {
-			allTas.pop(ta);
-			onTaRemoved(ta);
+			var taFromServer = onTaRemoved(ta);
+			allTas.remove(ta);
 		},
 		getTaForUser : function(user) {
 			return findTa(user);
 		},
-		getAllTas : function() {
-			return allTas;
-		},
-		
-		users : allUsers,
-		
 		findUserById : function(id){
 			return findUser(id);
 		}
 	}
-
 }());
+
+
+ko.applyBindings(tatometer);
+
+
+
 
 
 
@@ -89,27 +97,28 @@ function getSingleTa(i) {
 	var taCreator = users[0 + i];
 	var taReceiver = users[1 + i];
 	var description = 'Du tapte, ' + taReceiver.firstName;
-	var ta = factory.createTa(i+1,taCreator, taReceiver, description);
+	var ta = createTa(taCreator, taReceiver, description);
 	return ta;
 }
 
 function getUsers() {
 	var users = [];
-	users.push(factory.createUser(1, "John", "Korsnes"));
-	users.push(factory.createUser(2, "Hans Magnus", "Wold"));
-	users.push(factory.createUser(3, "Frode", "Sivertsen"));
-	users.push(factory.createUser(4, "Kristian", "Mella"));
-	users.push(factory.createUser(5, "Thomas", "Odd"));
-	users.push(factory.createUser(6, "Torgeir", "Haukaas"));
-	users.push(factory.createUser(7, "Trond-Olav", "Dahl"));
-	users.push(factory.createUser(8, "Jarle", "Lindset"));
-	users.push(factory.createUser(9, "Marius", "Mathisen"));
-	users.push(factory.createUser(10, "Claus", "Fasseland"));
-	users.push(factory.createUser(11, "Johan", "Randby"));
-	users.push(factory.createUser(12, "Even", "Krogsveen"));
-	users.push(factory.createUser(12, "Henrik", "Moen"));
+	users.push(createUser("John", "Korsnes"));
+	users.push(createUser("Hans Magnus", "Wold"));
+	users.push(createUser("Frode", "Sivertsen"));
+	users.push(createUser("Kristian", "Mella"));
+	users.push(createUser("Thomas", "Odd"));
+	users.push(createUser("Torgeir", "Haukaas"));
+	users.push(createUser("Trond-Olav", "Dahl"));
+	users.push(createUser("Jarle", "Lindset"));
+	users.push(createUser("Marius", "Mathisen"));
+	users.push(createUser("Claus", "Fasseland"));
+	users.push(createUser("Johan", "Randby"));
+	users.push(createUser("Even", "Krogsveen"));
+	users.push(createUser("Henrik", "Moen"));
 	return users;
 }
+
 
 
 

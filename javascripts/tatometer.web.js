@@ -1,34 +1,62 @@
+
+
 $(document).ready(function() {
 	
 	bindSelectBox();
-	bindExistingTas();
 	bindUsers();
 	
 	var loggedInUser = tatometer.users[0];
       
 	$('.tasubmit').click(function() {
-		var taReceiverId = $('#users :selected').val();
+		var taReceiverId = $('#taerSelect :selected').val();
 		var taer = tatometer.findUserById(taReceiverId);
 		var description = $('#description').val();
-		var ta = factory.createTa(loggedInUser, taer, description);
+		var ta = createTa(loggedInUser, taer, description);
+		
 		tatometer.addTa(ta, onTaAdded);
 	});
 		
 });
 
 function onTaAdded(ta){
+	console.log("Ajax-POST; adding ta: " + ta);
+	return ta;
+	/*
 	$.ajax({
 		url: 'ta/create/',
 		data: ta,
 		dataType : 'json',
 		type : 'POST',
-		success : function(msg){
-			console.log('Ta created serverside');
+		success : function(taCreated){
+			console.log('Ta created serverside:' + taCreated);
+			return taCreated;
 		},
-		error : function(msg){
-			console.log('Ta not created serverside! Error experienced!');
+		error : function(taError){
+			console.log('Ta error serverside:' + msg);
+			return taError;
 		}
 	});
+	*/
+}
+
+function onTaRemoved(taToRemove){
+	console.log("Ajax-POST; remove ta: " + taToRemove);
+	return taToRemove;
+	
+		/*
+	$.ajax({
+		url: 'ta/delete/id',
+		type : 'POST',
+		success : function(taRemoved){
+			console.log('Ta deleted serverside:' + taRemoved);
+			return taRemoved;
+		},
+		error : function(taError){
+			console.log('Ta error serverside:' + msg);
+			return taError;
+		}
+	});
+	*/
 }
 
 function bindSelectBox(){
@@ -41,14 +69,7 @@ function bindSelectBox(){
     $('#taerSelect').html(options);
 }
 
-function bindExistingTas(){
-	var list = '';
-	var j = tatometer.getAllTas();
-	for(var i = 0; i < j.length; i++) {
-		list += '<li>' + j[i].receiver.firstName + ' - '+  j[i].description + '</li>';
-	}
-	 $('#tas').html(list);
-}
+
 
 function bindUsers(){
 	var list = '';
