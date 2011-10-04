@@ -2,12 +2,11 @@
 
 $(document).ready(function() {
 	
-	bindSelectBox();
-	bindUsers();
+	
 	
 	$('#userbuttons').buttonset();
 	
-	var loggedInUser = tatometer.users[0];
+	var loggedInUser = tatometer.users()[0];
       
 	$('.tabutton').click(function() {
 		var description = $('#description').val();
@@ -67,27 +66,9 @@ function onTaRemoved(taToRemove){
 	*/
 }
 
-function bindSelectBox(){
-	var options = '';
-    var j = tatometer.users;
-	for(var i = 0; i < j.length; i++) {
-		options += '<option value="' + j[i].id + '">' + j[i].fullName + '</option>';
-	}
-
-    $('#taerSelect').html(options);
-}
 
 
 
-function bindUsers(){
-	var list = '';
-    var j = tatometer.users;
-	for(var i = 0; i < j.length; i++) {
-		list += '<li>' + j[i].fullName + '</li>';
-	}
-
-    $('#users').html(list);
-}
 
 
 

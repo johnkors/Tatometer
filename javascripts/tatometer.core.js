@@ -26,12 +26,21 @@ createUser = function(first, last) {
 }
 var tatometer = ( function() {
 
-	var allTas = [];
-	var allUsers = [];
-	allUsers = getUsers();
 	var tasFromServer = getTasFromServer();
-	allTas = ko.observableArray(tasFromServer);
+	var usersFromServer = getUsers();
 
+	var allTas = ko.observableArray([]);
+	var allUsers = ko.observableArray([]);
+	
+	for (var i=0; i < tasFromServer.length; i++) {
+	      allTas.push(tasFromServer[i]);
+	}
+	
+	for (var i=0; i < usersFromServer.length; i++) {
+	      allUsers.push(usersFromServer[i]);
+	}
+
+	
 	function findTa(user) {
 		for(var i = 0; i < allTas.length; i++) {
 			var currentTa = allTas[i];
@@ -42,12 +51,28 @@ var tatometer = ( function() {
 	}
 	
 	function findUser(id){
-		for(var i = 0; i < allUsers.length; i++){
-			var currentUser = allUsers[i];
+		for(var i = 0; i < allUsers().length; i++){
+			var currentUser = allUsers()[i];
 			if(currentUser.id == id){
 				return currentUser;
 			}
 		}
+	}
+	
+	function findAllTasForUser(user)
+	{
+		var tasForUser = [];
+		for (var i=0; i <  allTas.length; i++) {
+		  var ta = allTas.l[i];
+		  var receivers = ta.receivers;
+		  for (var i=0; i < receivers.length; i++) {
+			 var receiver = receivers[i];
+			 if(receiver.id == user.id){
+			 	tasForUser.push(ta);
+			 }
+		  };
+		};
+		return tasForUser;
 	}
 	
 	return {
@@ -56,23 +81,40 @@ var tatometer = ( function() {
 		
 		addTa : function(ta, onTaAdded) {
 			var taFromServer = onTaAdded(ta);
-			allTas.push(ta);
+			this.tas.push(ta);
 		},
 		removeTa : function(ta, onTaRemoved) {
 			var taFromServer = onTaRemoved(ta);
-			allTas.remove(ta);
+			this.tas.remove(ta);
 		},
 		getTaForUser : function(user) {
 			return findTa(user);
 		},
 		findUserById : function(id){
 			return findUser(id);
+		},
+		allTasForUser: function(user){
+			return findAllTasForUser(user);
 		}
 	}
 }());
 
+var viewModel = tatometer;
 
-ko.applyBindings(tatometer);
+viewModel.antallTaere = ko.dependentObservable(function() {
+   var total = 0;
+   console.log(this.tas());
+   for (var i = 0; i < this.tas().length; i++)
+   {
+   		var currentTa = this.tas()[i];
+       	total += this.tas()[i].receivers.length;
+   }
+   		
+   return total;
+}, viewModel);
+
+
+ko.applyBindings(viewModel);
 
 
 

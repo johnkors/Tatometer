@@ -59,6 +59,13 @@
 		</li>
 	</script>
 	
+	<script type="text/x-jquery-tmpl" id="usersTemplate">
+		<li>
+			<span>${fullName}</span>
+			<span>( ${taCount} )</span>
+		</li>
+	</script>
+	
 	
 	<div class="container">
 		<div class="sixteen columns">
@@ -77,14 +84,14 @@
 			<input class="tabutton full-width" type="submit" value="Lag TA!" />
 			</div>
 		<div class="one-third column">
-			<h3>Alle Ta</h3>
+			<h3>Alle Ta (Totalt: <span data-bind="text : antallTaere()"></span>)</h3>
 			<ul id="tas" class="square" data-bind="template: {name:'taTemplate', foreach:tas}">
 				
 			</ul>
 		</div>
 		<div class="one-third column">
 			<h3>Taere</h3>
-			<ul id="users" class="square">
+			<ul id="users" class="square" data-bind="template: {name:'usersTemplate', foreach:users}">
 				
 			</ul>
 		</div>
