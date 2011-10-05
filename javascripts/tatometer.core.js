@@ -7,10 +7,7 @@ createTa =  function(taCreator, taReceivers, taDescription) {
 		id : taId,
 		creator : taCreator,
 		receivers : taReceivers,
-		description : taDescription,
-		deleteTa : function(){ 
-			tatometer.removeTa(this, onTaRemoved);
-		}
+		description : taDescription
 	}
 }
 
@@ -25,20 +22,32 @@ createUser = function(first, last) {
 	}
 }
 var tatometer = ( function() {
-
-	var tasFromServer = getTasFromServer();
+	
 	var usersFromServer = getUsers();
+	var tasFromServer = getTasFromServer(usersFromServer);
+	
 
 	var allTas = ko.observableArray([]);
 	var allUsers = ko.observableArray([]);
 	
+	internalTa = function(taData){
+		  taData.deleteTa = function(){ 
+					tatometer.removeTa(this, onTaRemoved);
+				}
+		  return taData;
+	}
+	
 	for (var i=0; i < tasFromServer.length; i++) {
-	      allTas.push(tasFromServer[i]);
+		var taData = tasFromServer[i];
+	 	var newInternalTa = internalTa(taData);
+		allTas.push(newInternalTa);
 	}
 	
 	for (var i=0; i < usersFromServer.length; i++) {
 	      allUsers.push(usersFromServer[i]);
 	}
+	
+
 
 	
 	function findTa(user) {
@@ -79,13 +88,14 @@ var tatometer = ( function() {
 		tas : allTas,
 		users : allUsers,
 		
-		addTa : function(ta, onTaAdded) {
-			var taFromServer = onTaAdded(ta);
-			this.tas.push(ta);
+		addTa : function(taData, onTaAdded) {
+			var taCreatedServerside = onTaAdded(taData);
+			var newInternalTaFromDataCreatedServerside = internalTa(taCreatedServerside);
+			this.tas.push(newInternalTaFromDataCreatedServerside);
 		},
-		removeTa : function(ta, onTaRemoved) {
-			var taFromServer = onTaRemoved(ta);
-			this.tas.remove(ta);
+		removeTa : function(internalTaToRemove, onTaRemoved) {
+			var taRemovedServerside = onTaRemoved(internalTaToRemove);
+			this.tas.remove(taRemovedServerside);
 		},
 		getTaForUser : function(user) {
 			return findTa(user);
@@ -122,17 +132,16 @@ ko.applyBindings(viewModel);
 
 
 /* MOCK DATA */
-function getTasFromServer() {
+function getTasFromServer(users) {
 	var tas = [];
 	for(var i=0; i < 3; i++){
-		var ta = getSingleTa(i);
+		var ta = getSingleTa(i,users);
 		tas.push(ta);
 	}
 	return tas;
 }
 
-function getSingleTa(i) {
-	var users = getUsers();
+function getSingleTa(i, users) {
 	var taCreator = users[0 + i];
 	var taReceivers = [users[1 + i], users[2 + i]];
 	var description = 'Dere tapte, ' + taReceivers.length;
