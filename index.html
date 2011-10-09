@@ -45,7 +45,7 @@
 	         		<span>${fullName}</span>
 	         	{{/each}}
 	         	<span>Creator: ${creator.fullName}</span>
-	         	<span><a href="#" data-bind="click: deleteTa">Slett</a></span>
+	         	<span><a href="#" data-bind="click: function(){ viewModel.removeTa($data, onTaRemoved)}">Slett</a></span>
 	        </li>
 	</script>
 
@@ -84,7 +84,7 @@
 			<input class="tabutton full-width" type="submit" value="Lag TA!" />
 			</div>
 		<div class="one-third column">
-			<h3>Alle Ta (Totalt: <span data-bind="text : antallTaere()"></span>)</h3>
+			<h3>Antall taere (Totalt: <span data-bind="text : antallTaere()"></span>)</h3>
 			<ul id="tas" class="square" data-bind="template: {name:'taTemplate', foreach:tas}">
 				
 			</ul>

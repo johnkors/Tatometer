@@ -26,53 +26,29 @@ var tatometer = ( function() {
 	var usersFromServer = getUsers();
 	var tasFromServer = getTasFromServer(usersFromServer);
 	
-
-	var allTas = ko.observableArray([]);
-	var allUsers = ko.observableArray([]);
-	
-	internalTa = function(taData){
-		  taData.deleteTa = function(){ 
-					tatometer.removeTa(this, onTaRemoved);
-				}
-		  return taData;
-	}
-	
-	for (var i=0; i < tasFromServer.length; i++) {
-		var taData = tasFromServer[i];
-	 	var newInternalTa = internalTa(taData);
-		allTas.push(newInternalTa);
-	}
-	
-	for (var i=0; i < usersFromServer.length; i++) {
-	      allUsers.push(usersFromServer[i]);
-	}
-	
-
-
-	
-	function findTa(user) {
-		for(var i = 0; i < allTas.length; i++) {
-			var currentTa = allTas[i];
+	function findTa(tas, user) {
+		for(var i = 0; i < tas.length; i++) {
+			var currentTa = tas[i];
 			if(currentTa.id == user.id) {
 				return currentTa;
 			}
 		}
 	}
 	
-	function findUser(id){
-		for(var i = 0; i < allUsers().length; i++){
-			var currentUser = allUsers()[i];
+	function findUser(users, id){
+		for(var i = 0; i < users.length; i++){
+			var currentUser = users[i];
 			if(currentUser.id == id){
 				return currentUser;
 			}
 		}
 	}
 	
-	function findAllTasForUser(user)
+	function findAllTasForUser(tas, user)
 	{
 		var tasForUser = [];
-		for (var i=0; i <  allTas.length; i++) {
-		  var ta = allTas.l[i];
+		for (var i=0; i <  tas.length; i++) {
+		  var ta = tas.l[i];
 		  var receivers = ta.receivers;
 		  for (var i=0; i < receivers.length; i++) {
 			 var receiver = receivers[i];
@@ -85,26 +61,26 @@ var tatometer = ( function() {
 	}
 	
 	return {
-		tas : allTas,
-		users : allUsers,
+		tas : ko.observableArray(tasFromServer),
+	 	users : ko.observableArray(usersFromServer),
+	
 		
 		addTa : function(taData, onTaAdded) {
 			var taCreatedServerside = onTaAdded(taData);
-			var newInternalTaFromDataCreatedServerside = internalTa(taCreatedServerside);
-			this.tas.push(newInternalTaFromDataCreatedServerside);
+			this.tas.push(taCreatedServerside);
 		},
-		removeTa : function(internalTaToRemove, onTaRemoved) {
-			var taRemovedServerside = onTaRemoved(internalTaToRemove);
+		removeTa : function(taToRemove, onTaRemoved) {
+			var taRemovedServerside = onTaRemoved(taToRemove);
 			this.tas.remove(taRemovedServerside);
 		},
 		getTaForUser : function(user) {
-			return findTa(user);
+			return findTa(this.tas(), user);
 		},
 		findUserById : function(id){
-			return findUser(id);
+			return findUser(this.users(), id);
 		},
 		allTasForUser: function(user){
-			return findAllTasForUser(user);
+			return findAllTasForUser(this.tas(), user);
 		}
 	}
 }());
@@ -114,6 +90,8 @@ var viewModel = tatometer;
 viewModel.antallTaere = ko.dependentObservable(function() {
    var total = 0;
    console.log(this.tas());
+   console.log(this.tas().length);
+
    for (var i = 0; i < this.tas().length; i++)
    {
    		var currentTa = this.tas()[i];

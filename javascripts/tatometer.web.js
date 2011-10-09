@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
 	
 	
@@ -9,9 +7,11 @@ $(document).ready(function() {
 	var loggedInUser = tatometer.users()[0];
       
 	$('.tabutton').click(function() {
+		taButtonClick(loggedInUser);
+	});
+	
+	function taButtonClick(loggedInUser){
 		var description = $('#description').val();
-		
-		
 		var taReceiverIds = $('#userbuttons input:checked');
 		var taReceivers = [];
 		$.each(taReceiverIds, function(index, checkBox){
@@ -21,9 +21,11 @@ $(document).ready(function() {
 		});
 		var ta = createTa(loggedInUser, taReceivers, description);
 		tatometer.addTa(ta, onTaAdded);
-	});
+	}
+
 		
 });
+
 
 function onTaAdded(ta){
 	console.log("Ajax-POST; adding ta: " + ta);
@@ -65,6 +67,7 @@ function onTaRemoved(taToRemove){
 	});
 	*/
 }
+
 
 
 
