@@ -59,11 +59,12 @@ var tatometer = ( function() {
 		};
 		return tasForUser;
 	}
+	var selectedTaReceivers = [];
 	
 	return {
 		tas : ko.observableArray(tasFromServer),
 	 	users : ko.observableArray(usersFromServer),
-	
+		selected : ko.observableArray(selectedTaReceivers),
 		
 		addTa : function(taData, onTaAdded) {
 			var taCreatedServerside = onTaAdded(taData);
@@ -81,6 +82,9 @@ var tatometer = ( function() {
 		},
 		allTasForUser: function(user){
 			return findAllTasForUser(this.tas(), user);
+		},
+		addToTaReceivers : function(taReceiver){
+			this.selected.push(taReceiver);
 		}
 	}
 }());
@@ -89,8 +93,6 @@ var viewModel = tatometer;
 
 viewModel.antallTaere = ko.dependentObservable(function() {
    var total = 0;
-   console.log(this.tas());
-   console.log(this.tas().length);
 
    for (var i = 0; i < this.tas().length; i++)
    {
@@ -101,11 +103,13 @@ viewModel.antallTaere = ko.dependentObservable(function() {
    return total;
 }, viewModel);
 
+viewModel.antallChosenReceivers = ko.dependentObservable(function(){
+	
+}, viewModel);
 
-ko.applyBindings(viewModel);
 
-
-
+var tatometerElement = $('#tatometer')[0];
+ko.applyBindings(viewModel, tatometerElement);
 
 
 

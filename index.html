@@ -2,112 +2,113 @@
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-<head>
-
-	<!-- Basic Page Needs
-  ================================================== -->
-	<meta charset="utf-8">
-	<title>Tatometer</title>
-	<meta name="description" content="En betydningsfull mengde tas">
-	<meta name="author" content="Smarteboka">
-	<!--[if lt IE 9]>
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<head>
+		<!-- Basic Page Needs
+		================================================== -->
+		<meta charset="utf-8">
+		<title>Tatometer</title>
+		<meta name="description" content="En betydningsfull mengde tas">
+		<meta name="author" content="Smarteboka">
+		<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<!-- Mobile Specific Metas
-  ================================================== -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-	<!-- CSS
-  ================================================== -->
-	<link rel="stylesheet" href="stylesheets/base.css">
-	<link rel="stylesheet" href="stylesheets/skeleton.css">
-	<link rel="stylesheet" href="stylesheets/layout.css">
-	<link rel="stylesheet" href="stylesheets/jquery-ui-1.8.16.custom.css">
-	<link rel="stylesheet" href="stylesheets/tatometer.css">
-
-	<!-- Favicons
-	================================================== -->
-	<link rel="shortcut icon" href="images/favicon.ico">
-	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-
-</head>
-<body>
-	
-	<script type="text/x-jquery-tmpl" id="taTemplate">
-	        <li>
-	        	<span>${id}</span>
-	         	<span>${description}</span>
-	         	{{each receivers}}
-	         		<span>${fullName}</span>
-	         	{{/each}}
-	         	<span>Creator: ${creator.fullName}</span>
-	         	<span><a href="#" data-bind="click: function(){ viewModel.removeTa($data, onTaRemoved)}">Slett</a></span>
-	        </li>
-	</script>
-
-	<script type="text/x-jquery-tmpl" id="taerTemplate">
-		<li>
-			<input type="checkbox" class="userbutton" id="${id}" value="${id}"></input>
-			<label for="${id}">
-				<img src="http://www.gravatar.com/avatar/${gravatar}?s=72" 
-					 alt="${fullName}"> 
-			</label>
-		</li>
-	</script>
-	
-	<script type="text/x-jquery-tmpl" id="usersTemplate">
-		<li>
+		<![endif]-->
+		<!-- Mobile Specific Metas
+		================================================== -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- CSS
+		================================================== -->
+		<link rel="stylesheet" href="stylesheets/base.css">
+		<link rel="stylesheet" href="stylesheets/skeleton.css">
+		<link rel="stylesheet" href="stylesheets/layout.css">
+		<link rel="stylesheet" href="stylesheets/jquery-ui-1.8.16.custom.css">
+		<link rel="stylesheet" href="stylesheets/tatometer.css">
+		<!-- Favicons
+		================================================== -->
+		<link rel="shortcut icon" href="images/favicon.ico">
+		<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	</head>
+	<body>
+		<script type="text/x-jquery-tmpl" id="taTemplate">
+			<li>
+			<span>${id}</span>
+			<span>${description}</span>
+			{{each receivers}}
+			<span>${fullName}</span>
+			{{/each}}
+			<span>Creator: ${creator.fullName}</span>
+			<span><a href="#" data-bind="click: function(){ viewModel.removeTa($data, onTaRemoved)}">Slett</a></span>
+			</li>
+		</script>
+		<script type="text/x-jquery-tmpl" id="taerTemplate">
+			<li>
+				<input type="checkbox" class="userbutton" id="ChkBox_${id}" value="${id}"></input>
+				<label for="ChkBox_${id}">
+					<img src="http://www.gravatar.com/avatar/${gravatar}?s=72"
+						alt="${fullName}">
+				</label>
+			</li>
+		</script>
+		<script type="text/x-jquery-tmpl" id="usersTemplate">
+			<li>
 			<span>${fullName}</span>
 			<span>( ${taCount} )</span>
-		</li>
-	</script>
-	
-	
-	<div class="container">
-		<div class="sixteen columns">
-			<h1 class="remove-bottom" style="margin-top: 20px">Tatometer</h1>
-			<h5>Versjon 0.2.1</h5>
-			<hr />
-		</div>
-		<div class="sixteen columns">
-			<h3>Legg til ta</h3>
-			<ul id="userbuttons" data-bind="template: {name: 'taerTemplate', foreach:users}">
+			</li>
+		</script>
+		<script type="text/x-jquery-tmpl" id="menuTemplate">
+			<li data-bind="click: function() { menuViewModel.selectedItemShortname(shortName()); }">
+				<a href="#${shortName}" data-bind="css: { active: shortName() == menuViewModel.selectedItemShortname() }">
+					${name}
+				</a>
+			</li>
+		</script>
+		<div class="container">
+			<div id="tamenu" class="sixteen columns">
 				
-			</ul>
-			<div style="clear:both;"></div>
-	
-			<textarea id="description"></textarea> 
-			<input class="tabutton full-width" type="submit" value="Lag TA!" />
+				<ul id="tamenu" class="tabs" data-bind="template: { name: 'menuTemplate', foreach: menuItems }" />
 			</div>
-		<div class="one-third column">
-			<h3>Antall taere (Totalt: <span data-bind="text : antallTaere()"></span>)</h3>
-			<ul id="tas" class="square" data-bind="template: {name:'taTemplate', foreach:tas}">
-				
-			</ul>
+			<div id="tatometer" >
+				<ul class="tabs-content">
+					<li id="taer-valg" class="active">
+						<div class="sixteen columns">
+							<ul id="userbuttons" data-bind="template: {name: 'taerTemplate', foreach:users}"></ul>
+						</div>
+					</li>
+					<li id="ta-beskrivelse">
+						<div class="sixteen columns">
+							<textarea id="description"></textarea>
+							<input class="tabutton full-width" type="submit" value="Lag TA!" />
+						</div>
+					</li>
+					<li id="historikk">
+						<div class="sixteen columns">
+							<div>
+								<h3>Antall taere (Totalt: <span data-bind="text : antallTaere()"></span>)</h3>
+								<ul id="tas" class="square" data-bind="template: {name:'taTemplate', foreach:tas}"></ul>
+							</div>
+							<div>
+								<h3>Taere</h3>
+								<ul id="users" class="square" data-bind="template: {name:'usersTemplate', foreach:users}"></ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<div class="one-third column">
-			<h3>Taere</h3>
-			<ul id="users" class="square" data-bind="template: {name:'usersTemplate', foreach:users}">
-				
-			</ul>
-		</div>
+		<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+		<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+		<script src='javascripts/jquery.address.js'></script>
 
-	</div>
-
-	
-
-	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-	<script src="javascripts/tabs.js"></script>
-	<script src='javascripts/knockout-1.2.1.js'></script>
-	<script src="javascripts/tatometer.core.js"></script>
-	<script src="javascripts/tatometer.web.js"></script>
-
-
-</body>
+		<script src='javascripts/knockout-1.2.1.js'></script>
+		<script src="javascripts/knockout.address.js" type="text/javascript"></script>
+		<script src="javascripts/tatometer.core.js"></script>
+		<script src="javascripts/tatometer.menu.js"></script>
+		<script src="javascripts/tatometer.web.js"></script>
+		<script src="javascripts/tabs.js"></script>
+	</body>
 </html>
